@@ -2,7 +2,12 @@ main {
     min-height: 80vh;
 }
 
-img {
-    height: 300px;
+.img {
+    height: 250px;
     object-fit: cover;
+}
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
 }

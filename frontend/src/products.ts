@@ -7,7 +7,9 @@ export const products = [
     typeOfShare: 'give away',
     gender: 'neutral',
     condition: 'new',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'available',
   },
   {
     _id: '2',
@@ -17,27 +19,34 @@ export const products = [
     typeOfShare: 'lend',
     gender: 'neutral',
     condition: 'used - needs some repairs',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'borrowed',
+    expectedReturnDate: 'dd-mm-yyyy',
   },
   {
     _id: '3',
     name: 'Mechanical Keyboard',
     image: '/images/keyboard.jpg',
     brand: 'aaaa',
-    typeOfShare: 'exchange',
+    typeOfShare: 'give away',
     gender: 'neutral',
     condition: 'used - good condition',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'available',
   },
   {
     _id: '4',
     name: 'PS4 Controller',
     image: '/images/ps4-controller.jpg',
     brand: 'aaaa',
-    typeOfShare: 'exchange',
+    typeOfShare: 'lend',
     gender: 'neutral',
     condition: 'used - good condition',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'available',
   },
   {
     _id: '5',
@@ -47,16 +56,20 @@ export const products = [
     typeOfShare: 'give away',
     gender: 'female',
     condition: 'used - good condition',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'available',
   },
   {
     _id: '6',
     name: 'HeadSet',
     image: '/images/wired-headset.jpg',
     brand: 'aaaa',
-    typeOfShare: 'exchange',
+    typeOfShare: 'lend',
     gender: 'neutral',
     condition: 'used - good condition',
-    description: '',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipiscing elit himenaeos commodo lacus, est cursus natoque vitae ornare dapibus inceptos nibh. Rutrum fames faucibus nullam tempor tortor volutpat pretium, malesuada risus vivamus nostra nibh fringilla eleifend quam, mauris mattis congue maecenas ornare porta.',
+    status: 'available',
   },
 ];
