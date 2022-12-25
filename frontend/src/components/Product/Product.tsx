@@ -1,16 +1,16 @@
 import { Card } from 'react-bootstrap';
-import { IProduct } from './product.model';
+import { IProduct } from '../../shared/models/product.model';
 import { Link } from 'react-router-dom';
 
 function Product({ product }: { product: IProduct }) {
   return (
     <Card className="my-3 p-3">
-      <Link to={`/product/${product._id}`}>
+      <Link to={`/products/${product._id}`}>
         <Card.Img src={product.image} className="img" />
       </Link>
 
       <Card.Body>
-        <Link to={`/product/${product._id}`}>
+        <Link to={`/products/${product._id}`}>
           <Card.Title>
             <strong>{product.name}</strong>
           </Card.Title>

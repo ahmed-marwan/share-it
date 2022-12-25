@@ -7,4 +7,6 @@ export interface IProduct {
     gender: string;
     condition: string;
     description: string;
-}
+    status: string;
+    expectedReturnDate?: undefined;
+  }

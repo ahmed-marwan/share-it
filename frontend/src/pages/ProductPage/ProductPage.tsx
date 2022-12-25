@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Row,
@@ -8,14 +10,23 @@ import {
   Button,
   ListGroupItem,
 } from 'react-bootstrap';
-import { products } from '../../products';
+import { IProduct } from '../../shared/models/product.model';
 
 function ProductPage() {
+  const [product, setProduct] = useState<IProduct>();
   const params = useParams();
-  const selectedProduct = products.find((product) => product._id === params.id);
-  const condition =
-    selectedProduct!.condition[0].toUpperCase() +
-    selectedProduct!.condition.substring(1);
+
+  useEffect(() => {
+    const fetchSingleProduct = async () => {
+      const { data } = await axios.get<{ product: IProduct }>(
+        `/api/v1/products/${params.id}`
+      );
+
+      setProduct(data.product);
+    };
+
+    fetchSingleProduct();
+  }, [params.id]);
 
   return (
     <>
@@ -25,27 +36,23 @@ function ProductPage() {
 
       <Row>
         <Col md={4}>
-          <Image
-            src={selectedProduct?.image}
-            alt={selectedProduct?.name}
-            fluid
-          />
+          <Image src={product?.image} alt={product?.name} fluid />
         </Col>
 
         <Col md={5}>
           <ListGroup variant="flush">
             <ListGroupItem>
-              <h2>{selectedProduct?.name}</h2>
+              <h2>{product?.name}</h2>
             </ListGroupItem>
 
             <ListGroupItem className="space-between">
-              <span>{condition}</span>
-              <span>To {selectedProduct?.typeOfShare}</span>
+              <span>{product?.condition}</span>
+              <span>To {product?.typeOfShare}</span>
             </ListGroupItem>
 
             <ListGroupItem>
               <h5>About Product</h5>
-              {selectedProduct?.description}
+              {product?.description}
             </ListGroupItem>
           </ListGroup>
         </Col>
@@ -56,21 +63,21 @@ function ProductPage() {
               <ListGroupItem>
                 <Row>
                   <Col>Status:</Col>
-                  <Col>{selectedProduct?.status}</Col>
+                  <Col>{product?.status}</Col>
                 </Row>
               </ListGroupItem>
 
-              {selectedProduct?.status === 'borrowed' && (
+              {product?.status === 'borrowed' && (
                 <ListGroupItem>
                   <Row>
                     <Col>Expected Return Date:</Col>
-                    <Col>{selectedProduct?.expectedReturnDate}</Col>
+                    <Col>{product?.expectedReturnDate}</Col>
                   </Row>
                 </ListGroupItem>
               )}
 
               <ListGroupItem className="mx-auto">
-                <Button disabled={selectedProduct?.status !== 'available'}>
+                <Button disabled={product?.status !== 'available'}>
                   Add To Cart
                 </Button>
               </ListGroupItem>
