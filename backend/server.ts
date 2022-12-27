@@ -1,16 +1,21 @@
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config();
+import 'express-async-errors';
 import 'colors';
+dotenv.config();
 
 import connectDB from './db/connect';
 import productRouter from './routes/productRoutes';
 import getErrorMessage from './errors/getErrorMessage';
+import notFoundMiddleware from './middlewares/notFound';
+import errorHandler from './middlewares/errorHandler';
 
 const app = express();
 
 app.use(express.json());
 app.use('/api/v1/products', productRouter);
+app.use(notFoundMiddleware);
+app.use(errorHandler);
 
 const start = async () => {
   const PORT = process.env.PORT || 7000;
