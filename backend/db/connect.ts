@@ -1,7 +1,9 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const connectDB = (uri: string) => {
-    return mongoose.connect(uri);
-}
+  mongoose.set('strictQuery', true);
+  
+  return mongoose.connect(uri);
+};
 
-export default connectDB
+export default connectDB;

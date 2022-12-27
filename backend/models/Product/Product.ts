@@ -49,7 +49,7 @@ const ProductSchema = new Schema<IProduct>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      //   required: true,
     },
   },
   {
