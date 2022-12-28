@@ -14,9 +14,10 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 const getSingleProduct = async (req: Request, res: Response) => {
   const product = await Product.findOne({ _id: req.params.id });
+
   if (!product) {
     throw new CustomError.NotFoundError(
-      `No product with id: ${req.params.id}.`
+      `Not found: no product with id ${req.params.id}.`
     );
   }
 

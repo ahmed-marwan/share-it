@@ -1,38 +1,46 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 import Product from '../../components/Product/Product';
-import { IProduct } from '../../shared/models/product.model';
+import Spinner from '../../components/Spinner/Spinner';
+import Message from '../../components/Message/Message';
+import { AppDispatch, RootState } from '../../state/store';
+import { fetchProducts } from '../../state/features/productsSlice/productsSlice';
+import { ProductsState } from '../../state/features/productsSlice/productsSlice.model';
 
 function HomePage() {
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const dispatch: AppDispatch = useDispatch();
+  const { status, products, error } = useSelector<RootState, ProductsState>(
+    (state) => state.productsList
+  );
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get<{
-        length: number;
-        products: IProduct[];
-      }>('/api/v1/products');
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
 
-      setProducts(data.products);
-    };
-
-    fetchProducts();
-  }, []);
+  let content: JSX.Element[] | JSX.Element | undefined;
+  if (status === 'loading') {
+    content = <Spinner />;
+  } else if (status === 'succeeded') {
+    content = (
+      <Row>
+        {products.map((product) => (
+          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+            <Product key={product._id} product={product} />
+          </Col>
+        ))}
+      </Row>
+    );
+  } else if (status === 'failed') {
+    content = <Message variant="danger">{error}</Message>;
+  }
 
   return (
     <>
       <h1>Latest Products</h1>
-
-      <Row>
-        {products.map((product) => {
-          return (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product key={product._id} product={product} />
-            </Col>
-          );
-        })}
-      </Row>
+      {content}
     </>
   );
 }

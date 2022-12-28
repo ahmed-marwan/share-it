@@ -12,7 +12,7 @@ const errorHandler = (
 
   if (error.name === 'CastError') {
     customError.statusCode = 404;
-    customError.message = `No item found with id: ${error.value}`;
+    customError.message = `Not found: no product with id ${error.value}`;
   }
 
   res.status(customError.statusCode).json({ message: customError.message });

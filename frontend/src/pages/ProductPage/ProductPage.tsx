@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import {
   Row,
@@ -10,23 +10,23 @@ import {
   Button,
   ListGroupItem,
 } from 'react-bootstrap';
-import { IProduct } from '../../shared/models/product.model';
+import { AppDispatch, RootState } from '../../state/store';
+import { fetchProductDetails } from '../../state/features/productDetailsSlice/productDetailsSlice';
+import { ProductDetailsState } from '../../state/features/productDetailsSlice/productDetailsSlice.model';
+import Spinner from '../../components/Spinner/Spinner';
+import Message from '../../components/Message/Message';
 
 function ProductPage() {
-  const [product, setProduct] = useState<IProduct>();
   const params = useParams();
+  const dispatch: AppDispatch = useDispatch();
+  const { status, product, error } = useSelector<
+    RootState,
+    ProductDetailsState
+  >((state) => state.productDetails);
 
   useEffect(() => {
-    const fetchSingleProduct = async () => {
-      const { data } = await axios.get<{ product: IProduct }>(
-        `/api/v1/products/${params.id}`
-      );
-
-      setProduct(data.product);
-    };
-
-    fetchSingleProduct();
-  }, [params.id]);
+    dispatch(fetchProductDetails(params.id));
+  }, [params.id, dispatch]);
 
   return (
     <>
@@ -34,57 +34,63 @@ function ProductPage() {
         Go Back
       </Link>
 
-      <Row>
-        <Col md={4}>
-          <Image src={product?.image} alt={product?.name} fluid />
-        </Col>
+      {status === 'loading' ? (
+        <Spinner />
+      ) : status === 'succeeded' ? (
+        <Row>
+          <Col md={4}>
+            <Image src={product?.image} alt={product?.name} fluid />
+          </Col>
 
-        <Col md={5}>
-          <ListGroup variant="flush">
-            <ListGroupItem>
-              <h2>{product?.name}</h2>
-            </ListGroupItem>
-
-            <ListGroupItem className="space-between">
-              <span>{product?.condition}</span>
-              <span>To {product?.typeOfShare}</span>
-            </ListGroupItem>
-
-            <ListGroupItem>
-              <h5>About Product</h5>
-              {product?.description}
-            </ListGroupItem>
-          </ListGroup>
-        </Col>
-
-        <Col md={3}>
-          <Card>
+          <Col md={5}>
             <ListGroup variant="flush">
               <ListGroupItem>
-                <Row>
-                  <Col>Status:</Col>
-                  <Col>{product?.status}</Col>
-                </Row>
+                <h2>{product?.name}</h2>
               </ListGroupItem>
 
-              {product?.status === 'borrowed' && (
-                <ListGroupItem>
-                  <Row>
-                    <Col>Expected Return Date:</Col>
-                    <Col>{product?.expectedReturnDate}</Col>
-                  </Row>
-                </ListGroupItem>
-              )}
+              <ListGroupItem className="space-between">
+                <span>{product?.condition}</span>
+                <span>To {product?.typeOfShare}</span>
+              </ListGroupItem>
 
-              <ListGroupItem className="mx-auto">
-                <Button disabled={product?.status !== 'available'}>
-                  Add To Cart
-                </Button>
+              <ListGroupItem>
+                <h5>About Product</h5>
+                {product?.description}
               </ListGroupItem>
             </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+          </Col>
+
+          <Col md={3}>
+            <Card>
+              <ListGroup variant="flush">
+                <ListGroupItem>
+                  <Row>
+                    <Col>Status:</Col>
+                    <Col>{product?.status}</Col>
+                  </Row>
+                </ListGroupItem>
+
+                {product?.status === 'borrowed' && (
+                  <ListGroupItem>
+                    <Row>
+                      <Col>Expected Return Date:</Col>
+                      <Col>{product?.expectedReturnDate}</Col>
+                    </Row>
+                  </ListGroupItem>
+                )}
+
+                <ListGroupItem className="mx-auto">
+                  <Button disabled={product?.status !== 'available'}>
+                    Add To Cart
+                  </Button>
+                </ListGroupItem>
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>
+      ) : (
+        status === 'failed' && <Message variant="danger">{error}</Message>
+      )}
     </>
   );
 }
