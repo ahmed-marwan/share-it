@@ -5,7 +5,7 @@ function Message({
   variant = 'info',
   children,
 }: {
-  variant: string;
+  variant?: string;
   children: ReactNode;
 }) {
   return <Alert variant={variant}>{children}</Alert>;

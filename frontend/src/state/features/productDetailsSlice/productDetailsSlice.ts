@@ -4,7 +4,7 @@ import { ProductDetailsState } from './productDetailsSlice.model';
 import { IProduct } from '../../../shared/models/product.model';
 
 const initialState: ProductDetailsState = {
-  status: 'loading',
+  status: 'idle',
   product: undefined,
   error: undefined,
 };
@@ -48,7 +48,6 @@ export const productDetailsSlice = createSlice({
 
       .addCase(fetchProductDetails.rejected, (state, action) => {
         state.status = 'failed';
-        console.log(action.error);
 
         state.error = action.error.message;
       });

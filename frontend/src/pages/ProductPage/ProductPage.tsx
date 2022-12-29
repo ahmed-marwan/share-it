@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import {
@@ -15,18 +15,43 @@ import { fetchProductDetails } from '../../state/features/productDetailsSlice/pr
 import { ProductDetailsState } from '../../state/features/productDetailsSlice/productDetailsSlice.model';
 import Spinner from '../../components/Spinner/Spinner';
 import Message from '../../components/Message/Message';
+import { addToCart } from '../../state/features/cartSlice/cartSlice';
+import {
+  CartItem,
+  CartState,
+} from '../../state/features/cartSlice/cartSlice.model';
 
 function ProductPage() {
+  const [isItemRequested, setIsItemRequested] = useState(false);
   const params = useParams();
+
   const dispatch: AppDispatch = useDispatch();
   const { status, product, error } = useSelector<
     RootState,
     ProductDetailsState
   >((state) => state.productDetails);
 
+  const { cartItems } = useSelector<RootState, CartState>(
+    (state) => state.cartItems
+  );
+
   useEffect(() => {
     dispatch(fetchProductDetails(params.id));
   }, [params.id, dispatch]);
+
+  useEffect(() => {
+    const matchedCartItem = cartItems.find((item) => item._id === params.id);
+
+    if (matchedCartItem !== undefined) {
+      setIsItemRequested(true);
+    }
+  }, [cartItems, params.id]);
+
+  const addToCartHandler = (cartItem: CartItem) => {
+    if (!isItemRequested) {
+      dispatch(addToCart(cartItem));
+    }
+  };
 
   return (
     <>
@@ -80,7 +105,20 @@ function ProductPage() {
                 )}
 
                 <ListGroupItem className="mx-auto">
-                  <Button disabled={product?.status !== 'available'}>
+                  <Button
+                    disabled={
+                      product?.status !== 'available' || isItemRequested
+                    }
+                    onClick={() =>
+                      addToCartHandler({
+                        _id: product!._id,
+                        name: product!.name,
+                        image: product!.image,
+                        status: 'requested',
+                        requestStatus: 'pending',
+                      })
+                    }
+                  >
                     Add To Cart
                   </Button>
                 </ListGroupItem>

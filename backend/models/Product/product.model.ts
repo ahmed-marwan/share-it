@@ -9,6 +9,7 @@ export interface IProduct {
   condition: string;
   description: string;
   status: string;
+  requestStatus?: string;
   expectedReturnDate?: undefined;
   createdBy: Types.ObjectId;
 }

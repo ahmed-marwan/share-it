@@ -11,3 +11,13 @@ main {
     display: flex;
     justify-content: space-between;
 }
+
+h1 {
+    font-size: 1.7rem;
+    padding:1rem 0;
+}
+
+h2 {
+    font-size: 1.3rem;
+    padding: 0.5rem 0;
+}

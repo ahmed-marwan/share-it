@@ -40,8 +40,12 @@ const ProductSchema = new Schema<IProduct>(
     },
     status: {
       type: String,
-      enum: ['available', 'borrowed', 'given away'],
+      enum: ['available', 'requested', 'borrowed', 'given away'],
       default: 'available',
+    },
+    requestStatus: {
+      type: String,
+      enum: ['pending', 'accepted', 'declined'],
     },
     expectedReturnDate: {
       type: Date,
