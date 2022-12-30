@@ -1,8 +1,11 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Model, Schema, model } from 'mongoose';
 import validator from 'validator';
-import { IUser } from './user.model';
+import bcrypt from 'bcryptjs';
+import { IUser, IUserMethods } from './user.model';
 
-const UserSchema = new Schema<IUser>(
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     name: {
       type: String,
@@ -39,4 +42,16 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-export default mongoose.model('User', UserSchema);
+UserSchema.pre('save', async function () {
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+});
+
+UserSchema.methods.comparePassword = async function (insertedPassword: string) {
+  const isMatch = await bcrypt.compare(insertedPassword, this.password);
+  return isMatch;
+};
+
+export default model<IUser, UserModel>('User', UserSchema);
