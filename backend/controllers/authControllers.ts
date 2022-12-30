@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User/User';
 import CustomError from '../errors';
+import attachCookiesToResponse from '../utils/attachCookiesToResponse';
 
 const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -11,6 +12,8 @@ const register = async (req: Request, res: Response) => {
   }
 
   const user = await User.create({ name, email, password });
+  const token = user.genAuthToken();
+  attachCookiesToResponse(res, token);
 
   res.status(201).json({ user });
 };
@@ -32,6 +35,9 @@ const login = async (req: Request, res: Response) => {
   if (!isCorrectPassword) {
     throw new CustomError.UnauthorizedError('Invalid Credentials.');
   }
+
+  const token = user.genAuthToken();
+  attachCookiesToResponse(res, token);
 
   res.json({ user });
 };

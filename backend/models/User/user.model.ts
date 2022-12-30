@@ -6,4 +6,5 @@ export interface IUser {
 
 export interface IUserMethods {
   comparePassword(insertedPassword: string): Promise<boolean>;
+  genAuthToken(): string;
 }

@@ -1,6 +1,7 @@
-import mongoose, { Model, Schema, model } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { IUser, IUserMethods } from './user.model';
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -52,6 +53,12 @@ UserSchema.pre('save', async function () {
 UserSchema.methods.comparePassword = async function (insertedPassword: string) {
   const isMatch = await bcrypt.compare(insertedPassword, this.password);
   return isMatch;
+};
+
+UserSchema.methods.genAuthToken = function () {
+  return jwt.sign({ _id: this._id, name: this._name }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_LIFE_TIME,
+  });
 };
 
 export default model<IUser, UserModel>('User', UserSchema);

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import 'express-async-errors';
+import cookieParser from 'cookie-parser';
 import 'colors';
 dotenv.config();
 
@@ -14,8 +15,11 @@ import errorHandler from './middlewares/errorHandler';
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser(process.env.JWT_SECRET));
+
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/auth', authRouter);
+
 app.use(notFoundMiddleware);
 app.use(errorHandler);
 
