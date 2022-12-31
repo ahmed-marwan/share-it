@@ -14,15 +14,20 @@ import {
 import productsReducer from './features/productsSlice/productsSlice';
 import productDetailsReducer from './features/productDetailsSlice/productDetailsSlice';
 import cartItemsReducer from './features/cartSlice/cartSlice';
+import loginReducer from './features/loginSlice/loginSlice';
 
-const persistConfig = { key: 'root', storage };
-const persistedReducer = persistReducer(persistConfig, cartItemsReducer);
+const cartPersistConfig = { key: 'cartItems', storage };
+const loginPersistConfig = { key: 'login', storage };
+
+const persistedCartItems = persistReducer(cartPersistConfig, cartItemsReducer);
+const persistedLoginData = persistReducer(loginPersistConfig, loginReducer);
 
 const store = configureStore({
   reducer: {
     productsList: productsReducer,
     productDetails: productDetailsReducer,
-    cartItems: persistedReducer,
+    cartItems: persistedCartItems,
+    user: persistedLoginData,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

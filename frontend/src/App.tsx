@@ -5,6 +5,7 @@ import Footer from './components/Footer/Footer';
 import HomePage from './pages/HomePage/HomePage';
 import ProductPage from './pages/ProductPage/ProductPage';
 import CartPage from './pages/CartPage/CartPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 
 function App() {
   return (
@@ -15,10 +16,9 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<HomePage />} />
-
             <Route path="/products/:id" element={<ProductPage />} />
-
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </Container>
       </main>

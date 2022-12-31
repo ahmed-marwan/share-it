@@ -73,7 +73,7 @@ function ProductPage() {
                 <h2>{product?.name}</h2>
               </ListGroupItem>
 
-              <ListGroupItem className="space-between">
+              <ListGroupItem className="d-flex justify-content-between">
                 <span>{product?.condition}</span>
                 <span>To {product?.typeOfShare}</span>
               </ListGroupItem>

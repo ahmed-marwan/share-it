@@ -1,10 +1,18 @@
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { RootState } from '../../state/store';
+import { LoginState } from '../../state/features/loginSlice/loginSlice.model';
 
 function Header() {
+  // const dispatch: AppDispatch = useDispatch();
+  const { user } = useSelector<RootState, LoginState>((state) => state.user);
+
+  const logoutHandler = () => {};
+
   return (
     <header>
-      <Navbar className='navbar-dark bg-dark' collapseOnSelect>
+      <Navbar className="navbar-dark bg-dark" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>Share It</Navbar.Brand>
@@ -24,12 +32,27 @@ function Header() {
                 </Nav.Link>
               </LinkContainer>
 
-              <LinkContainer to="/login">
-                <Nav.Link>
-                  <span className="fas fa-user pe-1" aria-hidden="true"></span>
-                  Sign In
-                </Nav.Link>
-              </LinkContainer>
+              {user ? (
+                <NavDropdown title={user.name} id="username">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <LinkContainer to="/login">
+                  <Nav.Link>
+                    <span
+                      className="fas fa-user pe-1"
+                      aria-hidden="true"
+                    ></span>
+                    Sign In
+                  </Nav.Link>
+                </LinkContainer>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

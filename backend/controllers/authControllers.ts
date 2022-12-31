@@ -15,7 +15,7 @@ const register = async (req: Request, res: Response) => {
   const token = user.genAuthToken();
   attachCookiesToResponse(res, token);
 
-  res.status(201).json({ user });
+  res.status(201).json({ user: { _id: user._id, name } });
 };
 
 const login = async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ const login = async (req: Request, res: Response) => {
   const token = user.genAuthToken();
   attachCookiesToResponse(res, token);
 
-  res.json({ user });
+  res.json({ user: { _id: user._id, name: user.name } });
 };
 
 export { register, login };

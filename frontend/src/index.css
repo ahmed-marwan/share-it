@@ -7,11 +7,6 @@ main {
     object-fit: cover;
 }
 
-.space-between {
-    display: flex;
-    justify-content: space-between;
-}
-
 h1 {
     font-size: 1.7rem;
     padding:1rem 0;
