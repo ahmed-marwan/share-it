@@ -1,10 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {
+  getItemFromLocalStorage,
+  setItemInLocalStorage,
+} from '../../../shared/utils/utils';
 import { LoginState, IUser } from './loginSlice.model';
+
+const userInLocalStorage = getItemFromLocalStorage('user') as IUser;
 
 const initialState: LoginState = {
   status: 'idle',
-  user: undefined,
+  user: userInLocalStorage || undefined,
   error: undefined,
 };
 
@@ -15,6 +21,8 @@ export const loginUser = createAsyncThunk(
       const {
         data: { user },
       } = await axios.post<{ user: IUser }>('/api/v1/auth/login', loginData);
+
+      setItemInLocalStorage('user', user);
 
       return user;
     } catch (error: any) {

@@ -32,7 +32,7 @@ function ProductPage() {
   >((state) => state.productDetails);
 
   const { cartItems } = useSelector<RootState, CartState>(
-    (state) => state.cartItems
+    (state) => state.cart
   );
 
   useEffect(() => {

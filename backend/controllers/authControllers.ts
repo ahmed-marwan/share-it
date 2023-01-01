@@ -42,4 +42,13 @@ const login = async (req: Request, res: Response) => {
   res.json({ user: { _id: user._id, name: user.name } });
 };
 
-export { register, login };
+const logout = async (req: Request, res: Response) => {
+  res.cookie('token', 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
+  res.json({ message: 'User logged out successfully' });
+};
+
+export { register, login, logout };

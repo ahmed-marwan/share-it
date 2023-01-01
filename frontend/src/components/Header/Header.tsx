@@ -1,14 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { RootState } from '../../state/store';
+import { AppDispatch, RootState } from '../../state/store';
+import { logoutUser } from '../../state/features/logoutSlice/logoutSlice';
 import { LoginState } from '../../state/features/loginSlice/loginSlice.model';
 
 function Header() {
-  // const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { user } = useSelector<RootState, LoginState>((state) => state.user);
 
-  const logoutHandler = () => {};
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <header>

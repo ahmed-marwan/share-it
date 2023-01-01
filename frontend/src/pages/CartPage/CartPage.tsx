@@ -17,7 +17,7 @@ import CartItem from '../../components/CartItem/CartItem';
 function CartPage() {
   const dispatch = useDispatch();
   const { cartItems, cartItemsNumber } = useSelector<RootState, CartState>(
-    (state) => state.cartItems
+    (state) => state.cart
   );
 
   const removeCartItemHandler = (itemId: string) => {
