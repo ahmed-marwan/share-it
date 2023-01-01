@@ -7,7 +7,7 @@ import { LoginState } from '../../state/features/loginSlice/loginSlice.model';
 
 function Header() {
   const dispatch: AppDispatch = useDispatch();
-  const { user } = useSelector<RootState, LoginState>((state) => state.user);
+  const { user } = useSelector<RootState, LoginState>((state) => state.loginUser);
 
   const logoutHandler = () => {
     dispatch(logoutUser());

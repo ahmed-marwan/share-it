@@ -1,28 +1,30 @@
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
   getItemFromLocalStorage,
   setItemInLocalStorage,
 } from '../../../shared/utils/utils';
 import { logoutUser } from '../logoutSlice/logoutSlice';
-import { registerUser } from '../registerSlice/registerSlice';
-import { LoginState, IUser } from './loginSlice.model';
+import { RegisterState, RegisterData, IUser } from './registerSlice.model';
 
 const userInLocalStorage = getItemFromLocalStorage('user') as IUser;
 
-const initialState: LoginState = {
+const initialState: RegisterState = {
   status: 'idle',
   user: userInLocalStorage || undefined,
   error: undefined,
 };
 
-export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (loginData: { email: string; password: string }) => {
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (registerData: RegisterData) => {
     try {
       const {
         data: { user },
-      } = await axios.post<{ user: IUser }>('/api/v1/auth/login', loginData);
+      } = await axios.post<{ user: IUser }>(
+        '/api/v1/auth/register',
+        registerData
+      );
 
       setItemInLocalStorage('user', user);
 
@@ -39,17 +41,23 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const loginSlice = createSlice({
-  name: 'login user',
+export const registerSlice = createSlice({
+  name: 'register user',
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(registerUser.pending, (state, action) => {
         state.status = 'loading';
       })
 
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+        state.error = undefined;
+      })
+
+      .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
@@ -57,17 +65,8 @@ export const loginSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.status = 'idle';
         state.user = undefined;
-      })
-
-      .addMatcher(
-        isAnyOf(loginUser.fulfilled, registerUser.fulfilled),
-        (state, action) => {
-          state.status = 'succeeded';
-          state.user = action.payload;
-          state.error = undefined;
-        }
-      );
+      });
   },
 });
 
-export default loginSlice.reducer;
+export default registerSlice.reducer;

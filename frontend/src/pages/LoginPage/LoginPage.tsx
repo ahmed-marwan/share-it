@@ -20,7 +20,7 @@ import Spinner from '../../components/Spinner/Spinner';
 function LoginPage() {
   const dispatch: AppDispatch = useDispatch();
   const { status, user, error } = useSelector<RootState, LoginState>(
-    (state) => state.user
+    (state) => state.loginUser
   );
 
   const navigate = useNavigate();

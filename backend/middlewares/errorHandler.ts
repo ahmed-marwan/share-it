@@ -15,6 +15,13 @@ const errorHandler = (
     customError.message = `Not found: no product with id ${error.value}`;
   }
 
+  if (error.name === 'ValidationError') {
+    const errors: any[] = Object.values(error.errors);
+
+    customError.statusCode = 400;
+    customError.message = errors.map((error) => error.message).join(' ');
+  }
+
   res.status(customError.statusCode).json({ message: customError.message });
 };
 

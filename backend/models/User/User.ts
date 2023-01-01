@@ -29,11 +29,11 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     password: {
       type: String,
       required: [true, 'Please provide a password.'],
-      minLength: 8,
+      minLength: [8, 'Password has to be at least 8 characters.'],
       trim: true,
       validate(value: string) {
         if (value.toLowerCase().includes('password')) {
-          throw new Error('Password cannot contain the word"password."');
+          throw new Error('Password cannot contain the word: "password".');
         }
       },
     },

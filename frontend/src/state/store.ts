@@ -5,14 +5,16 @@ import productDetailsReducer from './features/productDetailsSlice/productDetails
 import cartReducer from './features/cartSlice/cartSlice';
 import loginReducer from './features/loginSlice/loginSlice';
 import logoutReducer from './features/logoutSlice/logoutSlice';
+import registerReducer from './features/registerSlice/registerSlice';
 
 const store = configureStore({
   reducer: {
     productsList: productsReducer,
     productDetails: productDetailsReducer,
     cart: cartReducer,
-    user: loginReducer,
+    loginUser: loginReducer,
     logoutStatus: logoutReducer,
+    registerUser: registerReducer,
   },
 });
 
