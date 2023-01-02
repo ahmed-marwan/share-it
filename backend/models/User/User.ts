@@ -56,7 +56,7 @@ UserSchema.methods.comparePassword = async function (insertedPassword: string) {
 };
 
 UserSchema.methods.genAuthToken = function () {
-  return jwt.sign({ _id: this._id, name: this._name }, process.env.JWT_SECRET, {
+  return jwt.sign({ _id: this._id, name: this.name }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFE_TIME,
   });
 };
