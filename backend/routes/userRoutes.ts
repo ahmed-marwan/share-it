@@ -1,7 +1,7 @@
 import express from 'express';
 import {
-  showCurrentUser,
-  updateUser,
+  getUserProfile,
+  updateUserProfile,
   updateUserPassword,
 } from '../controllers/userControllers';
 import authenticateUser from '../middlewares/auth/auth';
@@ -10,8 +10,8 @@ const router = express.Router();
 
 router
   .route('/profile')
-  .get(authenticateUser, showCurrentUser)
-  .patch(authenticateUser, updateUser);
+  .get(authenticateUser, getUserProfile)
+  .patch(authenticateUser, updateUserProfile);
 
 router.route('/update-password').patch(authenticateUser, updateUserPassword);
 

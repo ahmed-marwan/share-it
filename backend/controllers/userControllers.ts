@@ -4,11 +4,12 @@ import attachCookiesToResponse from '../utils/attachCookiesToResponse';
 import CustomError from '../errors';
 import { AuthUser } from '../middlewares/auth/auth.model';
 
-const showCurrentUser = async (req: AuthUser, res: Response) => {
-  res.json({ user: req.user });
+const getUserProfile = async (req: AuthUser, res: Response) => {
+  const user = await User.findOne({ _id: req.user!._id });
+  res.json({ user: { _id: user!._id, name: user!.name, email: user!.email } });
 };
 
-const updateUser = async (req: AuthUser, res: Response) => {
+const updateUserProfile = async (req: AuthUser, res: Response) => {
   const { name, email } = req.body;
   if (!name || !email) {
     throw new CustomError.BadRequestError(
@@ -25,7 +26,7 @@ const updateUser = async (req: AuthUser, res: Response) => {
   const token = user!.genAuthToken();
   attachCookiesToResponse(res, token);
 
-  res.json({ user: { _id: user!._id, name: user!.name } });
+  res.json({ user: { _id: user!._id, name: user!.name, email: user!.email } });
 };
 
 const updateUserPassword = async (req: AuthUser, res: Response) => {
@@ -49,4 +50,4 @@ const updateUserPassword = async (req: AuthUser, res: Response) => {
   res.json({ message: 'Password was updated successfully.' });
 };
 
-export { showCurrentUser, updateUser, updateUserPassword };
+export { getUserProfile, updateUserProfile, updateUserPassword };

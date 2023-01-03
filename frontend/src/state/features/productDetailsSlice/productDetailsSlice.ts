@@ -10,7 +10,7 @@ const initialState: ProductDetailsState = {
 };
 
 export const fetchProductDetails = createAsyncThunk(
-  'product/fetchProductDetails',
+  'products/fetchProductDetails',
   async (productId: string | undefined) => {
     try {
       const {

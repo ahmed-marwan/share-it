@@ -6,6 +6,9 @@ import cartReducer from './features/cartSlice/cartSlice';
 import loginReducer from './features/loginSlice/loginSlice';
 import logoutReducer from './features/logoutSlice/logoutSlice';
 import registerReducer from './features/registerSlice/registerSlice';
+import userProfileReducer from './features/userProfileSlice/userProfileSlice';
+import updateUserProfileReducer from './features/updateUserProfileSlice/updateUserProfileSlice'
+import updateUserPasswordReducer from './features/updateUserPasswordSlice/updateUserPasswordSlice'
 
 const store = configureStore({
   reducer: {
@@ -15,6 +18,9 @@ const store = configureStore({
     loginUser: loginReducer,
     logoutStatus: logoutReducer,
     registerUser: registerReducer,
+    userProfile: userProfileReducer,
+    updateUserProfile: updateUserProfileReducer,
+    updateUserPassword: updateUserPasswordReducer
   },
 });
 

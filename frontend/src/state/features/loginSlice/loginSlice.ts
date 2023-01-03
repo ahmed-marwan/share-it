@@ -6,6 +6,7 @@ import {
 } from '../../../shared/utils/utils';
 import { logoutUser } from '../logoutSlice/logoutSlice';
 import { registerUser } from '../registerSlice/registerSlice';
+import { updateUserProfile } from '../updateUserProfileSlice/updateUserProfileSlice';
 import { LoginState, IUser } from './loginSlice.model';
 
 const userInLocalStorage = getItemFromLocalStorage('user') as IUser;
@@ -60,7 +61,7 @@ export const loginSlice = createSlice({
       })
 
       .addMatcher(
-        isAnyOf(loginUser.fulfilled, registerUser.fulfilled),
+        isAnyOf(loginUser.fulfilled, registerUser.fulfilled, updateUserProfile.fulfilled),
         (state, action) => {
           state.status = 'succeeded';
           state.user = action.payload;
