@@ -16,7 +16,7 @@ function Product({ product }: { product: IProduct }) {
           </Card.Title>
         </Link>
 
-        <Card.Text>To {product.typeOfShare}</Card.Text>
+        <Card.Text>{product.typeOfShare}</Card.Text>
         <Card.Text>{product.condition}</Card.Text>
       </Card.Body>
     </Card>

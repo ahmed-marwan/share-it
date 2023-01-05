@@ -9,6 +9,7 @@ import {
   FormGroup,
   FormLabel,
   Row,
+  Table,
 } from 'react-bootstrap';
 import { AppDispatch, RootState } from '../../state/store';
 import { getUserProfile } from '../../state/features/userProfileSlice/userProfileSlice';
@@ -20,6 +21,8 @@ import { updateUserProfile } from '../../state/features/updateUserProfileSlice/u
 import { UpdateUserProfileState } from '../../state/features/updateUserProfileSlice/updateUserProfileSlice.model';
 import { updateUserPassword } from '../../state/features/updateUserPasswordSlice/updateUserPasswordSlice';
 import { UpdateUserPasswordState } from '../../state/features/updateUserPasswordSlice/updateUserPasswordSlice.model';
+import { CurrentUserProductsState } from '../../state/features/CurrentUserProducts/CurrentUserProducts.model';
+import { getCurrentUserProducts } from '../../state/features/CurrentUserProducts/CurrentUserProductsSlice';
 
 function UserProfilePage() {
   const [updatePassword, setUpdatePassword] = useState(false);
@@ -44,6 +47,14 @@ function UserProfilePage() {
       (state) => state.updateUserPassword
     );
 
+  const {
+    status: userProductsStatus,
+    products,
+    error: userProductsError,
+  } = useSelector<RootState, CurrentUserProductsState>(
+    (state) => state.userProducts
+  );
+
   const navigate = useNavigate();
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -53,17 +64,27 @@ function UserProfilePage() {
   useEffect(() => {
     if (!user) {
       navigate('/login');
-    }
-  }, [navigate, user]);
-
-  useEffect(() => {
-    if (!profile) {
-      dispatch(getUserProfile());
     } else {
-      nameRef.current!.value = profile.name;
-      emailRef.current!.value = profile.email;
+      if (!profile) {
+        dispatch(getUserProfile());
+        dispatch(getCurrentUserProducts());
+      } else {
+        nameRef.current!.value = profile.name;
+        emailRef.current!.value = profile.email;
+      }
     }
-  }, [dispatch, navigate, user, profile]);
+  }, [dispatch, navigate, profile, user]);
+
+  // TODO: Look for an alternative for the above nested if conditions
+  //   useEffect(() => {
+  //     if (!profile) {
+  //       dispatch(getUserProfile());
+  //       dispatch(getCurrentUserProducts());
+  //     } else if (profile) {
+  //       nameRef.current!.value = profile.name;
+  //       emailRef.current!.value = profile.email;
+  //     }
+  //   }, [dispatch, navigate, user, profile]);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -93,7 +114,7 @@ function UserProfilePage() {
   return (
     <Row>
       <Col md={3}>
-        <h2>User Profile</h2>
+        <h2>Profile</h2>
 
         {status === 'loading' && <Spinner />}
         {updateProfileStatus === 'succeeded' && (
@@ -168,7 +189,37 @@ function UserProfilePage() {
       </Col>
 
       <Col md={9}>
-        <h2>My Orders</h2>
+        <h2>My Products</h2>
+        {userProductsStatus === 'loading' && <Spinner />}
+        {userProductsError && (
+          <Message variant="danger">{userProductsError}</Message>
+        )}
+
+        <Table striped bordered hover responsive className="table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Type of Share</th>
+              <th>Condition</th>
+              <th>Status</th>
+              <th>Uploaded In</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={product._id}>
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>{product.typeOfShare}</td>
+                <td>{product.condition}</td>
+                <td>{product.status}</td>
+                <td>{product.createdAt.substring(0, 10)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </Col>
     </Row>
   );

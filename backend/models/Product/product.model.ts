@@ -11,5 +11,5 @@ export interface IProduct {
   status: string;
   requestStatus?: string;
   expectedReturnDate?: undefined;
-  createdBy: Types.ObjectId;
+  owner: Types.ObjectId;
 }

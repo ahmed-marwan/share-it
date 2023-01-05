@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { logoutUser } from '../logoutSlice/logoutSlice';
 import { updateUserProfile } from '../updateUserProfileSlice/updateUserProfileSlice';
 import { UserProfile, UserProfileState } from './UserProfileSlice.model';
 
@@ -35,6 +36,11 @@ export const userProfileSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.profile = undefined;
+      })
+
       .addCase(getUserProfile.pending, (state) => {
         state.status = 'loading';
       })

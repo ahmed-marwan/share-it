@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { removeItemFromLocalStorage } from '../../../shared/utils/utils';
+import { loginUser } from '../loginSlice/loginSlice';
 import { LogoutState } from './logoutSlice.model';
 
 const initialState: LogoutState = {
@@ -38,6 +39,10 @@ export const logoutSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+
+      .addCase(loginUser.fulfilled, (state) => {
+        state.status = 'idle';
       });
   },
 });

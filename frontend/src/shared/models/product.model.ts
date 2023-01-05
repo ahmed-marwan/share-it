@@ -10,4 +10,6 @@ export interface IProduct {
   status: string;
   requestStatus?: string;
   expectedReturnDate?: undefined;
+  owner: string;
+  createdAt: string;
 }

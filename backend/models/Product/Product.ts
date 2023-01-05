@@ -50,10 +50,10 @@ const ProductSchema = new Schema<IProduct>(
     expectedReturnDate: {
       type: Date,
     },
-    createdBy: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      //   required: true,
+      required: true,
     },
   },
   {

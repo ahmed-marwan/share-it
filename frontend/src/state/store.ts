@@ -7,8 +7,9 @@ import loginReducer from './features/loginSlice/loginSlice';
 import logoutReducer from './features/logoutSlice/logoutSlice';
 import registerReducer from './features/registerSlice/registerSlice';
 import userProfileReducer from './features/userProfileSlice/userProfileSlice';
-import updateUserProfileReducer from './features/updateUserProfileSlice/updateUserProfileSlice'
-import updateUserPasswordReducer from './features/updateUserPasswordSlice/updateUserPasswordSlice'
+import updateUserProfileReducer from './features/updateUserProfileSlice/updateUserProfileSlice';
+import updateUserPasswordReducer from './features/updateUserPasswordSlice/updateUserPasswordSlice';
+import currentUserProductsReducer from './features/CurrentUserProducts/CurrentUserProductsSlice';
 
 const store = configureStore({
   reducer: {
@@ -20,7 +21,8 @@ const store = configureStore({
     registerUser: registerReducer,
     userProfile: userProfileReducer,
     updateUserProfile: updateUserProfileReducer,
-    updateUserPassword: updateUserPasswordReducer
+    updateUserPassword: updateUserPasswordReducer,
+    userProducts: currentUserProductsReducer,
   },
 });
 
